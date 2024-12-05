@@ -1,26 +1,50 @@
-// import { useParams } from "react-router-dom";
-export const ProductDetails = () => {
-  // const { id } = useParams();
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
+
+const fetchProductDetails = async ({ queryKey }) => {
+  const response = await axios.get(
+    `http://localhost:3000/${queryKey[0]}/${queryKey[1]}`
+  );
+  // console.log("d", response.data);
+  return response.data;
+};
+
+// export const ProductDetailsWrapper = () => {
+//   const { id } = useParams();
+//   return <ProductDetails id={id} />;
+// };
+
+const ProductDetails = () => {
+  const { id } = useParams();
+  const {
+    data: product,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["products", id],
+    queryFn: fetchProductDetails,
+    // refetchInterval: false,
+  });
+
+  console.log(id, product);
+
   return (
     <div className="container productDetails mt-5">
       <div className="row">
         <div className="col-md-6 text-center">
           <img
-            src="https://via.placeholder.com/400x400"
+            src={product?.image}
             alt="Product Image"
-            className="product-image"
+            className="img-fluid img-thumbnail product-image"
           />
         </div>
 
         <div className="col-md-6">
-          <h1 className="mb-3">Sample Product</h1>
-          <p className="text-muted mb-4">Category: Electronics</p>
-          <p className="lead mb-4">
-            This is a detailed description of the sample product. It provides
-            features, specifications, and all necessary details about the
-            product.
-          </p>
-          <h3 className="text-primary mb-4">$99.99</h3>
+          <h1 className="mb-3">${product?.price}</h1>
+          <p className="text-muted mb-4">{product?.category}</p>
+          <p className="lead mb-4">{product?.description}</p>
+          <h3 className="text-primary mb-4">${product?.price}</h3>
 
           <div className="d-flex align-items-center mb-4">
             <label htmlFor="quantity" className="me-3">
@@ -41,10 +65,12 @@ export const ProductDetails = () => {
       </div>
 
       <div className="mt-5">
-        <button className="btn btn-secondary">
+        <Link to={"/products"} className="btn btn-secondary">
           <i className="ri-arrow-go-back-line"></i> Back to Products
-        </button>
+        </Link>
       </div>
     </div>
   );
 };
+
+export default ProductDetails;

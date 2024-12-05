@@ -3,17 +3,18 @@ body {
 }
 .sidebar {
   height: 100vh;
-  background-color: #343a40;
-  color: #fff;
+  background-color: #edebeb;
+  border-right: 2px solid rgba(0, 0, 0, 0.5);
+  color: #000;
 }
 .sidebar a {
-  color: #fff;
+  color: #000;
   text-decoration: none;
   padding: 10px 20px;
   display: block;
 }
 .sidebar a:hover {
-  background-color: #495057;
+  background-color: #0b71ff;
 }
 .content {
   padding: 20px;
@@ -44,6 +45,8 @@ body {
 
 .productDetails .product-image {
   max-width: 100%;
+  max-height: 300px !important;
+  object-fit: contain;
   border-radius: 5px;
 }
 .quantity-input {
